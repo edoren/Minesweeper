@@ -23,9 +23,9 @@ enum class SpriteID : uint8_t {
     NUMBER_8,
 };
 
-class MineMap {
+class GameMap {
 public:
-    MineMap(size_t map_width, size_t map_height, size_t mines_width,
+    GameMap(size_t map_width, size_t map_height, size_t mines_width,
             size_t mines_height, size_t num_mines);
 
     sf::Vector2f GetSize() const;

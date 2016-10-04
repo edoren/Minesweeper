@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "Map.hpp"
+#include "GameMap.hpp"
 
 #include <SFML/System.hpp>
 
@@ -13,7 +13,7 @@ int main(int, char* argv[]) {
                             sf::Style::Titlebar | sf::Style::Close);
 
     // Load a map to display
-    MineMap m(600, 600, 8, 8, 10);
+    GameMap map(600, 600, 8, 8, 10);
 
     // Start the game loop
     while (window.isOpen()) {
@@ -29,11 +29,11 @@ int main(int, char* argv[]) {
                     sf::Vector2f pos(static_cast<float>(event.mouseButton.x),
                                      static_cast<float>(event.mouseButton.y));
                     if (event.mouseButton.button == sf::Mouse::Left) {
-                        m.Dig(pos);
+                        map.Dig(pos);
                     } else if (event.mouseButton.button == sf::Mouse::Right) {
-                        m.ToggleFlag(pos);
+                        map.ToggleFlag(pos);
                     }
-                    m.Update();
+                    map.Update();
                     break;
                 }
                 default: {}
@@ -42,7 +42,7 @@ int main(int, char* argv[]) {
         // Clear screen
         window.clear();
         // Draw the sprite
-        m.Draw(window);
+        map.Draw(window);
         // Update the window
         window.display();
     }

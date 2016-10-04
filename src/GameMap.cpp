@@ -1,10 +1,10 @@
-#include "Map.hpp"
+#include "GameMap.hpp"
 
 #include <cmath>
 
 #define TEXTURE_SIZE 70
 
-MineMap::MineMap(size_t map_width, size_t map_height, size_t mines_width,
+GameMap::GameMap(size_t map_width, size_t map_height, size_t mines_width,
                  size_t mines_height, size_t num_mines)
       : position_(0, 0),
         tile_size_(0, 0),
@@ -51,49 +51,49 @@ MineMap::MineMap(size_t map_width, size_t map_height, size_t mines_width,
     SetSize({float(map_width), float(map_height)});
 }
 
-sf::Vector2f MineMap::GetSize() const {
+sf::Vector2f GameMap::GetSize() const {
     return {tile_size_.x * mines_.GetWidth(),
             tile_size_.y * mines_.GetHeight()};
 }
 
-void MineMap::SetSize(const sf::Vector2f& size) {
+void GameMap::SetSize(const sf::Vector2f& size) {
     tile_size_ = {size.x / mines_.GetWidth(), size.y / mines_.GetHeight()};
     for (auto& pair : sprites_) {
         pair.second.setScale(tile_size_ / float(TEXTURE_SIZE));
     }
 }
 
-const sf::Vector2f& MineMap::GetPosition() const {
+const sf::Vector2f& GameMap::GetPosition() const {
     return position_;
 };
 
-void MineMap::SetPosition(const sf::Vector2f& pos) {
+void GameMap::SetPosition(const sf::Vector2f& pos) {
     position_ = pos;
 };
 
-const sf::Vector2f& MineMap::GetTileSize() const {
+const sf::Vector2f& GameMap::GetTileSize() const {
     return tile_size_;
 }
 
-void MineMap::Dig(const sf::Vector2f& click_pos) {
+void GameMap::Dig(const sf::Vector2f& click_pos) {
     if (current_game_state_ != Minesweeper::GameState::INGAME) return;
     sf::Vector2<size_t> tile_pos = GetTilePos(click_pos);
     if (tile_pos.x < mines_.GetWidth() && tile_pos.y < mines_.GetHeight())
         mines_.Dig(tile_pos.x, tile_pos.y);
 }
 
-void MineMap::ToggleFlag(const sf::Vector2f& click_pos) {
+void GameMap::ToggleFlag(const sf::Vector2f& click_pos) {
     if (current_game_state_ != Minesweeper::GameState::INGAME) return;
     sf::Vector2<size_t> tile_pos = GetTilePos(click_pos);
     if (tile_pos.x < mines_.GetWidth() && tile_pos.y < mines_.GetHeight())
         mines_.ToggleFlag(tile_pos.x, tile_pos.y);
 }
 
-void MineMap::Update() {
+void GameMap::Update() {
     current_game_state_ = mines_.GetGameState();
 }
 
-void MineMap::Draw(sf::RenderWindow& window) {
+void GameMap::Draw(sf::RenderWindow& window) {
     for (size_t j = 0; j < mines_.GetHeight(); j++) {
         for (size_t i = 0; i < mines_.GetWidth(); i++) {
             sf::Sprite* bg_sprite = GetBackgroundSprite(i, j);
@@ -143,12 +143,12 @@ void MineMap::Draw(sf::RenderWindow& window) {
     }
 }
 
-sf::Vector2<size_t> MineMap::GetTilePos(const sf::Vector2f& pos) {
+sf::Vector2<size_t> GameMap::GetTilePos(const sf::Vector2f& pos) {
     return {static_cast<size_t>((pos.x - GetPosition().x) / GetTileSize().x),
             static_cast<size_t>((pos.y - GetPosition().y) / GetTileSize().y)};
 }
 
-sf::Sprite* MineMap::GetBackgroundSprite(size_t x, size_t y) {
+sf::Sprite* GameMap::GetBackgroundSprite(size_t x, size_t y) {
     Minesweeper::Tile& t = mines_.GetTile(x, y);
 
     if (!t.is_discovered) {
@@ -159,7 +159,7 @@ sf::Sprite* MineMap::GetBackgroundSprite(size_t x, size_t y) {
     return nullptr;
 }
 
-sf::Sprite* MineMap::GetItemSprite(size_t x, size_t y) {
+sf::Sprite* GameMap::GetItemSprite(size_t x, size_t y) {
     Minesweeper::Tile& t = mines_.GetTile(x, y);
     if (t.is_discovered) {
         if (t.has_bomb) {
