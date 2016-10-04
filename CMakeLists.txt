@@ -12,7 +12,7 @@ set(CMAKE_CONFIGURATION_TYPES "Debug;Release;RelWithDebInfo"
 mark_as_advanced(CMAKE_CONFIGURATION_TYPES)
 
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug
+    set(CMAKE_BUILD_TYPE Release
         CACHE STRING "Choose the type of build, options are: Debug Release"
         FORCE)
 endif()
