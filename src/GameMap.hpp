@@ -23,6 +23,12 @@ enum class SpriteID : uint8_t {
     NUMBER_8,
 };
 
+struct SpriteIDHash {
+    uint8_t operator()(SpriteID t) const {
+        return static_cast<uint8_t>(t);
+    }
+};
+
 class GameMap {
 public:
     GameMap(size_t map_width, size_t map_height, size_t mines_width,
@@ -58,5 +64,5 @@ private:
 
     Minesweeper mines_;
     Minesweeper::GameState current_game_state_;
-    std::unordered_map<SpriteID, sf::Sprite> sprites_;
+    std::unordered_map<SpriteID, sf::Sprite, SpriteIDHash> sprites_;
 };
