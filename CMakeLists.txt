@@ -72,9 +72,9 @@ set(TEMP_DIR "${CMAKE_BINARY_DIR}/obj")
 
 # Finding the libraries
 if(WIN32)
-    find_package(SFML 2.4 COMPONENTS main graphics window system)
+    find_package(SFML 2 COMPONENTS main graphics window system)
 else()
-    find_package(SFML 2.4 COMPONENTS graphics window system)
+    find_package(SFML 2 COMPONENTS graphics window system)
 endif()
 if(${SFML_FOUND})
     include_directories(${SFML_INCLUDE_DIR})

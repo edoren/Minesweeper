@@ -135,7 +135,11 @@ void GameMap::Draw(sf::RenderWindow& window) {
 
         sf::Text text(text_str, *default_font, 50);
         text.setStyle(sf::Text::Bold);
+#if (SFML_VERSION_MINOR >= 4)
         text.setFillColor(sf::Color::White);
+#else
+        text.setColor(sf::Color::White);
+#endif
         auto rect = text.getGlobalBounds();
         text.setOrigin(rect.width / 2.f, rect.height / 2.f);
         text.setPosition(map_center);
