@@ -86,24 +86,19 @@ void Minesweeper::ToggleFlag(size_t x, size_t y) {
 
 Minesweeper::GameState Minesweeper::GetGameState() const {
     size_t num_discovered = 0;
-    size_t num_mines_flagged = 0;
-
 
     for (auto& tile : tiles_) {
         if (tile.has_bomb) {
             // Check if any mine has been digged
             if (tile.is_discovered) {
                 return GameState::LOST;
-            } else if (tile.has_flag) {
-                num_mines_flagged++;
             }
         } else if (tile.is_discovered) {
             num_discovered++;
         }
     }
 
-    if (num_mines_flagged == num_mines_ &&
-        num_discovered == (GetWidth() * GetHeight() - num_mines_)) {
+    if (num_discovered == (GetWidth() * GetHeight() - num_mines_)) {
         return GameState::WON;
     } else {
         return GameState::INGAME;

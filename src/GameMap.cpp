@@ -126,6 +126,7 @@ void GameMap::Draw(sf::RenderWindow& window) {
         sf::Vector2f map_size(GetSize());
         sf::Vector2f map_center(GetPosition() + map_size / 2.f);
 
+        // Draw the background
         sf::Vector2f block_size(map_size.x, map_size.y / 3.f);
         sf::RectangleShape block(block_size);
         block.setOrigin(block_size / 2.f);
@@ -133,6 +134,7 @@ void GameMap::Draw(sf::RenderWindow& window) {
         block.setFillColor(sf::Color(0, 0, 0, 200));
         window.draw(block);
 
+        // Draw the state of the game
         sf::Text text(text_str, *default_font, 50);
         text.setStyle(sf::Text::Bold);
 #if (SFML_VERSION_MINOR >= 4)
@@ -165,32 +167,48 @@ sf::Sprite* GameMap::GetBackgroundSprite(size_t x, size_t y) {
 
 sf::Sprite* GameMap::GetItemSprite(size_t x, size_t y) {
     Minesweeper::Tile& t = mines_.GetTile(x, y);
+
+    sf::Sprite* result = nullptr;
+
     if (t.is_discovered) {
-        if (t.has_bomb) {
-            return &sprites_[SpriteID::BOMB_RED];
-        }
         if (t.bombs_around == 1) {
-            return &sprites_[SpriteID::NUMBER_1];
+            result = &sprites_[SpriteID::NUMBER_1];
         } else if (t.bombs_around == 2) {
-            return &sprites_[SpriteID::NUMBER_2];
+            result = &sprites_[SpriteID::NUMBER_2];
         } else if (t.bombs_around == 3) {
-            return &sprites_[SpriteID::NUMBER_3];
+            result = &sprites_[SpriteID::NUMBER_3];
         } else if (t.bombs_around == 4) {
-            return &sprites_[SpriteID::NUMBER_4];
+            result = &sprites_[SpriteID::NUMBER_4];
         } else if (t.bombs_around == 5) {
-            return &sprites_[SpriteID::NUMBER_5];
+            result = &sprites_[SpriteID::NUMBER_5];
         } else if (t.bombs_around == 6) {
-            return &sprites_[SpriteID::NUMBER_6];
+            result = &sprites_[SpriteID::NUMBER_6];
         } else if (t.bombs_around == 7) {
-            return &sprites_[SpriteID::NUMBER_7];
+            result = &sprites_[SpriteID::NUMBER_7];
         } else if (t.bombs_around == 8) {
-            return &sprites_[SpriteID::NUMBER_8];
+            result = &sprites_[SpriteID::NUMBER_8];
         }
     } else {
         if (t.has_flag) {
-            return &sprites_[SpriteID::FLAG_ORANGE];
+            result = &sprites_[SpriteID::FLAG_ORANGE];
         }
     }
 
-    return nullptr;
+    if (current_game_state_ != Minesweeper::GameState::INGAME) {
+        if (t.has_bomb) {
+            if (t.is_discovered) {
+                result = &sprites_[SpriteID::BOMB_RED];
+            } else if (current_game_state_ == Minesweeper::GameState::WON) {
+                result = &sprites_[SpriteID::FLAG_GREEN];
+            } else if (current_game_state_ == Minesweeper::GameState::LOST) {
+                if (t.has_flag) {
+                    result = &sprites_[SpriteID::FLAG_GREEN];
+                } else {
+                    result = &sprites_[SpriteID::BOMB];
+                }
+            }
+        }
+    }
+
+    return result;
 }
