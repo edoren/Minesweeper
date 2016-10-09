@@ -89,6 +89,10 @@ void GameMap::ToggleFlag(const sf::Vector2f& click_pos) {
         mines_.ToggleFlag(tile_pos.x, tile_pos.y);
 }
 
+size_t GameMap::NumFlagsPlaced() const {
+    return mines_.NumFlagsPlaced();
+};
+
 void GameMap::Update() {
     current_game_state_ = mines_.GetGameState();
 }

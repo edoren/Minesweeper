@@ -98,13 +98,24 @@ Minesweeper::GameState Minesweeper::GetGameState() const {
         }
     }
 
+    // Return won if al the non-mine Tiles has been discovered
     if (num_discovered == (GetWidth() * GetHeight() - num_mines_)) {
         return GameState::WON;
     } else {
         return GameState::INGAME;
     }
+}
 
-    // Return won if the last conditions has been fulfilled
+size_t Minesweeper::NumFlagsPlaced() const {
+    size_t num_flags = 0;
+
+    for (auto& tile : tiles_) {
+        if (tile.has_flag && !tile.is_discovered) {
+            num_flags++;
+        }
+    }
+
+    return num_flags;
 }
 
 void Minesweeper::PrintBombs() {

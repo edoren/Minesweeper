@@ -46,7 +46,7 @@ public:
 
     void ToggleFlag(const sf::Vector2f& click_pos);
 
-    Minesweeper::GameState GetGameState() const;
+    size_t NumFlagsPlaced() const;
 
     void Update();
 

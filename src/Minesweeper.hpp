@@ -47,6 +47,8 @@ public:
 
     GameState GetGameState() const;
 
+    size_t NumFlagsPlaced() const;
+
     void PrintBombs();
 
 private:
