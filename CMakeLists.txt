@@ -80,14 +80,10 @@ if(${SFML_FOUND})
     include_directories(${SFML_INCLUDE_DIR})
 else()
     message(STATUS "Building SFML from source.")
-    set(SFML_DIRECTORY ${THIRD_PARTY_DIR}/SFML)
+    set(SFML_DIRECTORY "${THIRD_PARTY_DIR}/SFML")
 
-    set(SFML_INCLUDE_DIR ${SFML_DIRECTORY}/include)
-
-    set(BUILD_SHARED_LIBS FALSE)
-    add_definitions(-DSFML_STATIC)
-
-    add_subdirectory(${SFML_DIRECTORY} ${TEMP_DIR}/SFML EXCLUDE_FROM_ALL)
+    add_subdirectory(${SFML_DIRECTORY} "${TEMP_DIR}/SFML" EXCLUDE_FROM_ALL)
+    set(SFML_INCLUDE_DIR "${SFML_DIRECTORY}/include")
     if(WIN32)
         set(SFML_LIBRARIES sfml-main sfml-graphics sfml-window sfml-system)
     else()
